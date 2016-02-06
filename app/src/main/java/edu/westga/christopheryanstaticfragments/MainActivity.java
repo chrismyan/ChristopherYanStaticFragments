@@ -8,8 +8,40 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DataEntryFragment.DataEntryListener {
+
+    @Override
+    public void onDataEntry(double first, double second) {
+        DataDisplayFragment displayFragment = (DataDisplayFragment)
+                getSupportFragmentManager().findFragmentById(R.id.dataDisplayFragment);
+
+        TextView firstNumber = (TextView)  findViewById(R.id.editText);
+        String firstNumberStr = firstNumber.getText().toString();
+
+        TextView secondNumber = (TextView)  findViewById(R.id.editText2);
+        String secondNumberStr = secondNumber.getText().toString();
+
+        // Validate values of first and second number
+        double firstNumberDbl;
+        if(firstNumberStr == null || firstNumberStr.isEmpty()) {
+            firstNumberDbl = 0.0;
+        } else {
+            firstNumberDbl = Double.parseDouble(firstNumber.getText().toString());
+        }
+
+        double secondNumberDbl;
+        if(secondNumberStr == null || secondNumberStr.isEmpty()) {
+            secondNumberDbl = 0.0;
+        } else {
+            secondNumberDbl = Double.parseDouble(secondNumber.getText().toString());
+        }
+        displayFragment.setFirstNumber(firstNumberDbl);
+        displayFragment.setSecondNumber(secondNumberDbl);
+        displayFragment.multiply(firstNumberDbl, secondNumberDbl);
+        displayFragment.displayProduct();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
